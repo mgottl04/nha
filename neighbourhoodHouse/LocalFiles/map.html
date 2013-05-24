@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<style type="text/css">
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-image: url("http://i.imgur.com/4a3DVRI.png")
+}
+
+#map-canvas {
+	height: 100%
+}
+
+.side-buttons {
+	width: 3em;
+	height: 3em;
+}
+</style>
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQGfTxd7GERrPTUBBFw0IO69cMQMsMSys&sensor=true">
+	
+</script>
+<script type="text/javascript">
+        function OnChangeCheckbox () {
+        	if (document.getElementById ("Event").checked){
+            var family = document.getElementById ("family").checked;
+            var childCare = document.getElementById ("child care").checked;
+            var communityDevelopment = document.getElementById ("community development").checked;
+            var employment = document.getElementById ("employment").checked;
+            var housing = document.getElementById ("housing").checked;
+            var newcomers = document.getElementById ("newcomers").checked;
+            var senior = document.getElementById ("senior").checked;
+            var array = new filterEventsByCat(communityDevelopment, childCare, employment, family, housing, newcomers, senior, new getDatabase());
+            initialize(array);
+        	} else {
+        		 var family = document.getElementById ("family").checked;
+                 var childCare = document.getElementById ("child care").checked;
+                 var communityDevelopment = document.getElementById ("community development").checked;
+                 var employment = document.getElementById ("employment").checked;
+                 var housing = document.getElementById ("housing").checked;
+                 var newcomers = document.getElementById ("newcomers").checked;
+                 var senior = document.getElementById ("senior").checked;
+                 var array = new filterBusinessesByCat(communityDevelopment, childCare, employment, family, housing, newcomers, senior, new getDatabase());
+                 initialize(array);
+             	
+        	}
+//             alert(communityDevelopment+' '+childCare+' '+ employment +' '+family+' '+ housing +' '+newcomers +' '+senior);
+}
+    </script>
+<script type="text/javascript" src="js/geolocator.js"></script>
+<script type="text/javascript" src="js/InfoBubble.js"></script>
+<script type="text/javascript" src="js/datasource.js"></script>
+<script type="text/javascript" src="js/code.js"></script>
+<script type="text/javascript" src="js/filter.js"></script>
+
+</head>
+<body>
+	<div id="content" style="width: 100%; height: 100%">
+		<div id="side-max"
+			style="background-color: rgba(218, 165, 32, 0.2); width: 0em; height: 100%; float: left; text-align: center; transition-property: width; transition-duration: 700ms">
+			<table id="filterTable" align=center
+				style="text-align: center; visibility: hidden; transition-property: visibility; transition-duration: 700ms">
+				<tr>
+					<th style="text-align: center"><h2>Filter Results</h2></th>
+				</tr>
+				<tr>
+					<table id="timeTable" align=center
+						style="text-align: center; visibility: hidden; transition-property: visibility; transition-duration: 700ms">
+						<tr>
+							<td>Min Time</td>
+							<td>Max Time</td>
+						</tr>
+						<tr>
+							<td><select class="select-s" id="minTimeSelect"
+								title="Min Time" onclick="minmaxtime">
+									<option>12:00pm</option>
+									<option>1:00am</option>
+									<option>2:00am</option>
+									<option>3:00am</option>
+									<option>4:00am</option>
+									<option>5:00am</option>
+									<option>6:00am</option>
+									<option>7:00am</option>
+									<option>8:00am</option>
+									<option>9:00am</option>
+									<option>10:00am</option>
+									<option>11:00am</option>
+									<option>12:00pm</option>
+									<option>1:00pm</option>
+									<option>2:00pm</option>
+									<option>3:00pm</option>
+									<option>4:00pm</option>
+									<option>5:00pm</option>
+									<option>6:00pm</option>
+									<option>7:00pm</option>
+									<option>8:00pm</option>
+									<option>9:00pm</option>
+									<option>10:00pm</option>
+									<option>11:00pm</option>
+							</select></td>
+							<td><select class="select-s" id="minTimeSelect"
+								title="Min Time">
+									<option>12:00pm</option>
+									<option>1:00am</option>
+									<option>2:00am</option>
+									<option>3:00am</option>
+									<option>4:00am</option>
+									<option>5:00am</option>
+									<option>6:00am</option>
+									<option>7:00am</option>
+									<option>8:00am</option>
+									<option>9:00am</option>
+									<option>10:00am</option>
+									<option>11:00am</option>
+									<option>12:00pm</option>
+									<option>1:00pm</option>
+									<option>2:00pm</option>
+									<option>3:00pm</option>
+									<option>4:00pm</option>
+									<option>5:00pm</option>
+									<option>6:00pm</option>
+									<option>7:00pm</option>
+									<option>8:00pm</option>
+									<option>9:00pm</option>
+									<option>10:00pm</option>
+									<option>11:00pm</option>
+							</select></td>
+						</tr>
+					</table>
+				<tr>
+					<table id="dateTable" align=center
+						style="text-align: center; visibility: hidden; transition-property: visibility; transition-duration: 700ms">
+
+						<tr>
+							<td>Month</td>
+							<td>Date</td>
+							<td>Year</td>
+						</tr>
+						<tr>
+							<td><select id="month-select" class="select-s">
+									<option>Jan</option>
+									<option>Feb</option>
+									<option>Mar</option>
+									<option>Apr</option>
+									<option>May</option>
+									<option>Jun</option>
+									<option>Jul</option>
+									<option>Aug</option>
+									<option>Sep</option>
+									<option>Oct</option>
+									<option>Nov</option>
+									<option>Dec</option>
+							</select></td>
+							<td><select id="day-select" class="select-s">
+									<option>01</option>
+									<option>02</option>
+									<option>03</option>
+									<option>04</option>
+									<option>05</option>
+									<option>06</option>
+									<option>07</option>
+									<option>08</option>
+									<option>09</option>
+									<option>10</option>
+									<option>11</option>
+									<option>12</option>
+									<option>13</option>
+									<option>14</option>
+									<option>15</option>
+									<option>16</option>
+									<option>17</option>
+									<option>18</option>
+									<option>19</option>
+									<option>20</option>
+									<option>21</option>
+									<option>22</option>
+									<option>23</option>
+									<option>24</option>
+									<option>25</option>
+									<option>26</option>
+									<option>27</option>
+									<option>28</option>
+									<option>29</option>
+									<option>30</option>
+									<option>31</option>
+							</select></td>
+							<td><select id="year-select" class="select-s">
+									<option>2013</option>
+									<option>2014</option>
+							</select></td>
+						</tr>
+					</table>
+				</tr>
+				<tr>
+				<h4>Categories</h4>
+				</tr>
+				<tr>
+					<form style = "text-align: left">
+						<input id="community development" type="checkbox" name="community development"
+							value="community development" onclick="OnChangeCheckbox (this)">Community Development<br>
+					</form>
+				</tr>
+				<tr>
+					<form style = "text-align: left">
+						<input id="child care" type="checkbox" name="child care" value="child care" onclick="OnChangeCheckbox ()">Child
+						Care<br>
+					</form>
+				</tr>
+				<tr>
+					<form style = "text-align: left">
+						<input id="employment" type="checkbox" name="employment" value="employment" onclick="OnChangeCheckbox ()">Employment<br>
+					</form>
+				</tr>
+				<tr>
+					<form style = "text-align: left">
+						<input id="family" type="checkbox" name="family" value="family" onclick="OnChangeCheckbox()">Family<br>
+					</form>
+				</tr>
+				<tr>
+					<form style = "text-align: left">
+						<input id="housing" type="checkbox" name="housing" value="housing" onclick="OnChangeCheckbox ()">Housing<br>
+					</form>
+				</tr>
+				<tr>
+					<form style = "text-align: left">
+						<input id="newcomers" type="checkbox" name="newcomers" value="newcomers" onclick="OnChangeCheckbox ()">Newcomers<br>
+					</form>
+				</tr>
+
+				<tr>
+					<form style = "text-align: left">
+						<input id="senior" type="checkbox" name="senior" value="senior" onclick="OnChangeCheckbox ()">Senior<br>
+					</form>
+				</tr>
+				<tr>
+				<h4>Select Marker Type</h4></tr>
+				<tr>
+					<td>
+						<form style = "text-align: left">
+							<input type="radio" id="Event" name="stuff" value="events" onclick="OnChangeCheckbox ()">Event<br>
+							<input checked="true" id="Business" type="radio" name="stuff" value="business" onclick="OnChangeCheckbox ()">Business
+						</form>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div id="side-min"
+			style="background-color: rgba(165, 42, 42, 1); width: 2em; height: 100%; float: left; text-align: center"
+			onclick="expandMin()">
+			.<br> .<br> .<br>
+		</div>
+		<div id="side-max-R"
+			style="background-color: rgba(218, 165, 32, 0.2); width: 0em; height: 100%; float: right; text-align: center; transition-property: width; transition-duration: 300ms">
+			<table align=center>
+				<tr>
+					<td><img id="home" src="http://i.imgur.com/YfgBHfz.png"
+						class="side-buttons"></td>
+				</tr>
+				<tr>
+					<td><img id="employment" src="http://i.imgur.com/yducaHC.png"
+						class="side-buttons"></td>
+				</tr>
+				<tr>
+					<td><img id="newcomers" src="http://i.imgur.com/avx7YC9.png"
+						class="side-buttons"></td>
+				</tr>
+				<tr>
+					<td>
+						<button type="button"
+							onclick="newPopup('https://www.facebook.com/Such.Adorable.Kittens?ref=ts&fref=ts')">
+							<img id="facebook" src="http://i.imgur.com/oNz3Gcp.png"
+								class="side-buttons">
+						</button>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<button type="button" onclick="loginpopup()">
+							<img id="login" src="http://i.imgur.com/hDaZoUR.png"
+								class="side-buttons">
+						</button>
+					</td>
+				</tr>
+
+			</table>
+
+		</div>
+		<div id="side-min-R"
+			style="background-color: rgba(165, 42, 42, 1); width: 1em; height: 100%; float: right; text-align: center"
+			onclick="expandMinR()">
+			.<br> .<br> .<br>
+		</div>
+		<div id="map-canvas" style="border-width: 1em"></div>
+	</div>
+</body>
+</html>

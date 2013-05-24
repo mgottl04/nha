@@ -1,0 +1,59 @@
+<!DOCTYPE html>"C:/Users/Claire/Desktop/info.js"
+<!--
+* @file index.html
+*
+* Template application that shows examples of how to access
+* device services from JavaScript using the Wormhole library.
+-->
+<html>
+	<head>
+		<meta name="viewport" content="width=320, user-scalable=no">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		<script type="text/javascript" charset="utf-8" src="js/datasource.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/utils.js"></script>
+		<script type="text/javascript">
+			/**
+			 * Displays the device information on the screen.
+			 */
+			
+			function init()
+			{
+				var eventName = getQueryVariable("event");
+				document.title = eventName;
+				document.getElementById("heading").innerHTML = eventName;
+				populateEventInfo();
+			}
+			
+			function populateEventInfo()
+			{
+				var accountName = getQueryVariable("account");
+				var businessName = getQueryVariable("business");
+				var eventName = getQueryVariable("event");
+				var event = getDatabase().getEvent(accountName, businessName, eventName);
+				
+				document.getElementById("name").innerHTML = "Name: " + event.name;
+				document.getElementById("address").innerHTML = "Address: " + event.address;
+				document.getElementById("dates").innerHTML = "Date and Time: " + event.date;
+				document.getElementById("contact").innerHTML = "Contact: " + event.contact;
+				document.getElementById("desc").innerHTML = "Description: " + event.description;
+			}
+
+		</script>
+	</head>
+	<body>
+		<div id="screen">
+			<div class="pane" id="heading"></div>
+			<div class="pane" id="info">
+				<div class="infoItem">			
+				<div id="name"></div>
+				<div id="address"></div>
+				<div id="dates"></div>
+				<div id="contact"></div>
+				<div id="desc"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>init();</script>
+</html>

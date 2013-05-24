@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<!--
+* @file index.html
+*
+* Template application that shows examples of how to access
+* device services from JavaScript using the Wormhole library.
+-->
+<html>
+<head>
+
+
+<meta name="viewport" content="width=320, user-scalable=no">
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+<style type="text/css">
+html {
+	height: 100%
+}
+
+
+.screen{
+
+
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" media="screen"
+	title="no title" charset="utf-8">
+<script type="text/javascript" charset="utf-8" src="js/datasource.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/utils.js"></script>
+<script type="text/javascript">
+			/**
+			 * Displays the device information on the screen.
+			 */
+			function init()
+			{
+				document.title = "Add Business";
+				document.getElementById("heading").innerHTML = "Add Business";
+			}
+			
+			function submit()
+			{
+				var accountName = getQueryVariable("account");
+				this.account = getDatabase().getAccount(accountName);
+				
+				this.name = document.getElementById("name").value;
+				this.address = document.getElementById("address").value;
+				this.phone = document.getElementById("phone").value;
+				this.email = document.getElementById("email").value;
+				this.contact = document.getElementById("contact").value;
+				this.hours = document.getElementById("hours").value;
+				this.desc = document.getElementById("desc").value;
+				
+				this.categories = new Array();
+				
+				if (document.getElementById("community development").checked)
+				{ this.categories.push("community development"); }
+					
+				
+				if (document.getElementById("childcare").checked)
+				{ 	this.categories.push("childcare"); }
+				
+				if (document.getElementById("employment").checked)
+				{	this.categories.push("employment"); }
+				
+				if (document.getElementById("family").checked)
+				{	this.categories.push("family"); }
+				
+				if (document.getElementById("housing").checked)
+				{	this.categories.push("housing"); }
+				
+				if (document.getElementById("newcomers").checked)
+				{	this.categories.push("newcomers"); }
+				
+				if (document.getElementById("senior").checked)
+				{	this.categories.push("senior"); }
+				
+				this.events = new Array();
+				this.business = new Business(this.name, this.address, this.desc, this.phone, this.hours, this.contact, this.email, this.categories, this.events);
+				this.account.addBusiness(this.business);
+				
+				window.location.href = "AccountHome.html?account=" + accountName;
+			}
+
+			// Register event listeners.
+
+			// Close the application when the back key is pressed.
+			document.addEventListener(
+				"backbutton",
+				function() { 
+					var accountName = getQueryVariable("account");
+					window.location.href = "AccountHome.html?account=" + accountName; },
+				true);
+		</script>
+
+
+
+
+
+</head>
+<body >
+	<script type="text/javascript" charset="utf-8" src="js/test.js"></script>
+		<div class="pane" id="heading"></div>
+		<div class="pane" id="info" style = "color: rgba(240,240,240,0.7)">
+			<div>
+				<div style = "text-align: right">
+					Name: <input type="text" id="name">
+				</div>
+				<div style = "text-align: right">
+					Address: <input type="text" id="address">
+				</div>
+				<div style = "text-align: right">
+					Phone number: <input type="text" id="phone">
+				</div>
+				<div style = "text-align: right">
+					Email: <input type="text" id="email">
+				</div>
+				<div style = "text-align: right">
+					Contact person: <input type="text" id="contact">
+				</div>
+				<div style = "text-align: right">
+					Hours: <input type="text" id="hours">
+				</div>
+				<div style = "text-align: right">
+					Description: <input type="text" id="desc">
+				</div>
+				<tr>
+					<form align = left>
+						<input type="checkbox" id="community development"
+							value="community development">Community Development<br>
+					</form>
+				</tr>
+				<tr>
+					<form align = left>
+						<input type="checkbox" id="childcare" value="childcare">Child
+						Care<br>
+					</form>
+				</tr>
+				<tr>
+					<form align = left>
+						<input type="checkbox" id="employment" value="employment">Employment<br>
+					</form>
+				</tr>
+				<tr>
+					<form align = left>
+						<input type="checkbox" id="family" value="family">Family<br>
+					</form>
+				</tr>
+				<tr>
+					<form align = left>
+						<input type="checkbox" id="housing" value="housing">Housing<br>
+					</form>
+				</tr>
+				<tr>
+					<form align = left>
+						<input type="checkbox" id="newcomers" value="newcomers">Newcomers<br>
+					</form>
+				</tr>
+
+				<tr>
+					<form align = left>
+						<input type="checkbox" id="senior" value="senior">Senior<br>
+					</form>
+				</tr>
+				</tr>
+				<div class="pane button" onclick="submit()">Submit</div>
+			</div>
+		</div>
+</body>
+<script>init();</script>
+</html>

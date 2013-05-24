@@ -1,0 +1,93 @@
+<!DOCTYPE html>"C:/Users/Claire/Desktop/info.js"
+<!--
+* @file index.html
+*
+* Template application that shows examples of how to access
+* device services from JavaScript using the Wormhole library.
+-->
+<html>
+	<head>
+		<meta name="viewport" content="width=320, user-scalable=no">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		<script type="text/javascript" charset="utf-8" src="js/datasource.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/utils.js"></script>
+		<script type="text/javascript">
+			/**
+			 * Displays the device information on the screen.
+			 */
+			
+			function init()
+			{
+				var businessName = getQueryVariable("business");
+				document.title = businessName;
+				document.getElementById("heading").innerHTML = businessName;
+				populateBusinessInfo();
+				populateEventList();	
+			}
+			
+			function populateBusinessInfo()
+			{
+				var accountName = getQueryVariable("account");
+				var businessName = getQueryVariable("business");
+				var business = getDatabase().getBusiness(accountName, businessName);
+				
+				document.getElementById("name").innerHTML = "Name: " + business.name;
+				document.getElementById("address").innerHTML = "Address: " + business.address;
+				document.getElementById("phone").innerHTML = "Phone: " + business.phone;
+				document.getElementById("email").innerHTML = "Email: " +business.email;
+				document.getElementById("contact").innerHTML = "Contact: " +business.contactName;
+				document.getElementById("hours").innerHTML = "Hours: " +business.hours;
+				document.getElementById("desc").innerHTML = "Description: " + business.description;
+			}
+			
+			function populateEventList()
+			{
+				var accountName = getQueryVariable("account");
+				var businessName = getQueryVariable("business");
+				var business = getDatabase().getBusiness(accountName, businessName);
+				var ul = document.getElementById("eventList");
+				var events = business.events;
+				for (var i = 0; i < events.length; i++ ) {
+					var div = document.createElement("div");
+					var hyperlink = document.createElement("a");
+					var uri = "EventHome.html?account=" + accountName + "&business=" + businessName + "&event=" + events[i].name;
+					hyperlink.setAttribute("href",uri);
+					div.appendChild(hyperlink);
+					ul.appendChild(div);
+					hyperlink.innerHTML = events[i].name;
+				}			
+			}
+			
+			function add()
+			{
+				var accountName = getQueryVariable("account");
+				var businessName = getQueryVariable("business");
+				var uri = "AddEvent.html?account=" + accountName + "&business=" + businessName;
+				window.location.href = uri;
+			}
+
+		</script>
+	</head>
+	<body>
+		<div id="screen">
+			<div class="pane" id="heading"></div>
+			<div class="pane" id="info">
+				<div class="infoItem">			
+				<div id="name"></div>
+				<div id="address"></div>
+				<div id="phone"></div>
+				<div id="email"></div>
+				<div id="contact"></div>
+				<div id="hours"></div>
+				<div id="desc"></div>
+				<div><h4>Events</h4></div>
+				<ul id="eventList">
+				</ul>
+				<div class="pane button" onclick="add()">Add Event</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>init();</script>
+</html>

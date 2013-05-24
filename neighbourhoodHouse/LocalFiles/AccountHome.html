@@ -1,0 +1,67 @@
+<!DOCTYPE html>"C:/Users/Claire/Desktop/info.js"
+<!--
+* @file index.html
+*
+* Template application that shows examples of how to access
+* device services from JavaScript using the Wormhole library.
+-->
+<html>
+	<head>
+		<meta name="viewport" content="width=320, user-scalable=no">
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" href="style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		<script type="text/javascript" charset="utf-8" src="js/datasource.js"></script>
+		<script type="text/javascript" charset="utf-8" src="js/utils.js"></script>
+		<script type="text/javascript">
+			/**
+			 * Displays the device information on the screen.
+			 */
+			
+			function init()
+			{
+				document.title = "My Businesses";
+				document.getElementById("heading").innerHTML = "My Businesses";
+				populateBusinessList();	
+			}
+			
+			function populateBusinessList()
+			{
+				//var accountName = getQueryVariable("account");
+				var accountName = "Default";
+				var account = getDatabase().getAccount(accountName);
+				var ul = document.getElementById("businessList");
+				var businesses = account.businesses;
+				for (var i = 0; i < businesses.length; i++ ) {
+					var div = document.createElement("div");
+					var hyperlink = document.createElement("a");
+					var uri = "BusinessHome.html?account=" + accountName + "&business=" + businesses[i].name; 
+					hyperlink.setAttribute("href",uri);
+					div.appendChild(hyperlink);
+					ul.appendChild(div);
+					hyperlink.innerHTML = businesses[i].name;
+				}			
+			}
+			
+			function add()
+			{
+				//var accountName = getQueryVariable("account");
+				var accountName = "Default";
+				window.location.href = "AddBusiness.html?account=" + accountName; 
+			}
+
+		</script>
+	</head>
+	<body>
+		<div id="screen">
+			<div class="pane" id="heading"></div>
+			<div class="pane" id="info">
+				<div class="infoItem">
+				<ul id="businessList">
+				</ul>				
+				<div class="pane button" onclick="add()">Add Business</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>init();</script>
+</html>

@@ -1,0 +1,49 @@
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-image: url("http://i.imgur.com/4a3DVRI.png");
+	text-color: rgba(240,240,240,0.5);
+}
+
+.pane {
+	color: rgba(240,240,240,0.8)
+	display: block;
+	margin: 10px auto 10px auto;
+	border: 0px solid #EEEEEE;
+	-webkit-border-radius: 5px;
+	clear: both;
+	width: 280px;
+	padding: 10px 10px 10px 10px;
+}
+
+#heading {
+	background: rgba(165, 42, 42, 0.7);
+	color: rgba (240, 240, 240, 0.7);
+	font-size: 1.6em;
+	font-weight: bold;
+	text-align: center;
+	margin-top: 15px;
+}
+
+#info {
+	background: rgba(0,0,0,0.6);
+	line-height: 1.5em;
+}
+
+.infoItem {
+	font-size: 0.9em;
+	font-weight: bold;
+	color: #AAAAAA;
+	display: block;
+}
+
+.button {
+	background: rgba(165, 42, 42, 0.5);
+	text-align: center;
+	color: #222222;
+	font-size: 1.4em;
+	font-weight: bold;
+	cursor: pointer;
+	width: 7em
+	}
